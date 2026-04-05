@@ -1,0 +1,4 @@
+interface:
+  display_name: "Designgen"
+  short_description: "整理项目需求并生成面向客户确认使用的正式说明类文档"
+  default_prompt: "Use $designgen to interview the user and draft a single client-facing requirement document."
