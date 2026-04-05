@@ -25,17 +25,38 @@ Structure:
 
 ## Installation
 
-### Codex
+### Official Skills CLI
 
-Native format for this repository.
+Recommended installation method:
+
+```bash
+npx skills add https://github.com/xqnode/skills
+```
+
+Install a specific skill:
+
+```bash
+npx skills add https://github.com/xqnode/skills --skill designgen
+npx skills add https://github.com/xqnode/skills --skill graduation-project-discovery
+```
+
+List available skills before installing:
+
+```bash
+npx skills add https://github.com/xqnode/skills --list
+```
+
+### Codex Manual Install
+
+Native file structure for Codex. Use this if you want manual local installation.
 
 ```bash
 git clone https://github.com/xqnode/skills.git ~/.codex/skills
 ```
 
-### Cline
+### Cline Manual Install
 
-Cline supports skill directories with `SKILL.md`, so copy each skill into `~/.cline/skills/`.
+Copy each skill into `~/.cline/skills/`.
 
 ```bash
 git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
@@ -44,7 +65,7 @@ cp -R /tmp/xqnode-skills/designgen ~/.cline/skills/
 cp -R /tmp/xqnode-skills/graduation-project-discovery ~/.cline/skills/
 ```
 
-### Claude Code
+### Claude Code Manual Adaptation
 
 Claude Code does not use Codex-style skills directly. Its closest reusable format is custom slash commands in `.claude/commands/`, so install by cloning this repo and adapting the markdown files into command files.
 
@@ -55,7 +76,7 @@ cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .claude/commands/designgen.m
 cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .claude/commands/graduation-project-discovery.md
 ```
 
-### Cursor
+### Cursor Manual Adaptation
 
 Cursor does not load Codex-style skills directly. The closest reusable format is project commands in `.cursor/commands/`, so install by cloning this repo and adapting the markdown files into command files.
 
@@ -68,6 +89,7 @@ cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .cursor/c
 
 ### Notes on Compatibility
 
+- `Official Skills CLI`: recommended
 - `Codex`: native support
 - `Cline`: compatible with the skill directory pattern
 - `Claude Code`: manual adaptation recommended

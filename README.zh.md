@@ -25,15 +25,36 @@
 
 ## 安装说明
 
-### Codex
+### 官方 Skills CLI
 
-这是本仓库的原生格式，直接克隆到 `~/.codex/skills` 即可。
+推荐安装方式：
+
+```bash
+npx skills add https://github.com/xqnode/skills
+```
+
+安装指定 skill：
+
+```bash
+npx skills add https://github.com/xqnode/skills --skill designgen
+npx skills add https://github.com/xqnode/skills --skill graduation-project-discovery
+```
+
+安装前先查看可用 skill：
+
+```bash
+npx skills add https://github.com/xqnode/skills --list
+```
+
+### Codex 手动安装
+
+这是本仓库的原生目录结构；如果你想手动本地安装，可以直接克隆到 `~/.codex/skills`。
 
 ```bash
 git clone https://github.com/xqnode/skills.git ~/.codex/skills
 ```
 
-### Cline
+### Cline 手动安装
 
 Cline 支持带有 `SKILL.md` 的技能目录结构，建议将每个技能目录复制到 `~/.cline/skills/` 下。
 
@@ -44,7 +65,7 @@ cp -R /tmp/xqnode-skills/designgen ~/.cline/skills/
 cp -R /tmp/xqnode-skills/graduation-project-discovery ~/.cline/skills/
 ```
 
-### Claude Code
+### Claude Code 手动适配
 
 Claude Code 不能直接原生加载 Codex 风格的 skill。最接近的复用方式是 `.claude/commands/` 下的自定义 slash commands，所以建议先克隆仓库，再把对应 `SKILL.md` 适配成命令文件。
 
@@ -55,7 +76,7 @@ cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .claude/commands/designgen.m
 cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .claude/commands/graduation-project-discovery.md
 ```
 
-### Cursor
+### Cursor 手动适配
 
 Cursor 也不能直接原生加载 Codex 风格的 skill。最接近的复用方式是 `.cursor/commands/` 下的项目命令，所以建议先克隆仓库，再把对应 `SKILL.md` 适配成命令文件。
 
@@ -68,6 +89,7 @@ cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .cursor/c
 
 ### 兼容性说明
 
+- `官方 Skills CLI`：推荐
 - `Codex`：原生支持
 - `Cline`：兼容 skill 目录结构
 - `Claude Code`：建议手动适配
