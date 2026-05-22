@@ -7,6 +7,7 @@
 - [LICENSE](./LICENSE): MIT license
 - [designgen/](./designgen): Four-part requirement document generation skill
 - [graduation-project-discovery/](./graduation-project-discovery): Graduation project phase-1 discovery skill
+- [windows-inno-env-installer/](./windows-inno-env-installer): Windows Inno Setup EXE packager with env vars and JDK auto-install
 
 ## Overview
 
@@ -16,11 +17,13 @@ Current custom skills:
 
 - `designgen`: Generates client-facing four-part requirement documents for graduation projects and similar delivery scenarios.
 - `graduation-project-discovery`: Handles phase-1 requirement intake, clarification, confirmation, and formal requirement freezing for graduation projects.
+- `windows-inno-env-installer`: Packages portable tools (Maven, etc.) into Inno Setup EXE installers with HKCU env configuration and silent Java/JDK handling.
 
 Structure:
 
 - `designgen/`: Requirement input document generation skill
 - `graduation-project-discovery/`: Phase-1 discovery and requirement-freezing skill
+- `windows-inno-env-installer/`: Inno Setup installer build skill with preflight scripts
 - `.system/`: Local system-provided skills, ignored by Git
 
 ## Installation
@@ -38,6 +41,7 @@ Install a specific skill:
 ```bash
 npx skills add https://github.com/xqnode/skills --skill designgen
 npx skills add https://github.com/xqnode/skills --skill graduation-project-discovery
+npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 ```
 
 List available skills before installing:
@@ -63,6 +67,7 @@ git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
 mkdir -p ~/.cline/skills
 cp -R /tmp/xqnode-skills/designgen ~/.cline/skills/
 cp -R /tmp/xqnode-skills/graduation-project-discovery ~/.cline/skills/
+cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cline/skills/
 ```
 
 ### Claude Code Manual Adaptation
@@ -74,6 +79,7 @@ git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .claude/commands
 cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .claude/commands/designgen.md
 cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .claude/commands/graduation-project-discovery.md
+cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .claude/commands/windows-inno-env-installer.md
 ```
 
 ### Cursor Manual Adaptation
@@ -85,6 +91,14 @@ git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .cursor/commands
 cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .cursor/commands/designgen.md
 cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .cursor/commands/graduation-project-discovery.md
+cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .cursor/commands/windows-inno-env-installer.md
+```
+
+Or install as a Cursor Agent Skill:
+
+```bash
+git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
+cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cursor/skills/
 ```
 
 ### Notes on Compatibility
