@@ -5,24 +5,18 @@
 - [README.md](./README.md)：英文说明
 - [README.zh.md](./README.zh.md)：中文说明
 - [LICENSE](./LICENSE)：MIT 许可证
-- [designgen/](./designgen)：四段式需求文档生成技能
-- [graduation-project-discovery/](./graduation-project-discovery)：毕设项目第 1 阶段需求梳理技能
 - [windows-inno-env-installer/](./windows-inno-env-installer)：Windows Inno 安装包打包（环境变量 + JDK 静默检测）
 
 ## 概览
 
-这个仓库用于存放可复用的 Codex Skills，供多个项目共同使用。
+本仓库存放 Windows 安装包打包相关的可复用 Agent Skill。
 
-当前自定义技能：
+当前技能：
 
-- `designgen`：用于生成面向客户确认的四段式需求文档，适合毕设类和模板化交付场景。
-- `graduation-project-discovery`：用于执行毕设项目第 1 阶段的需求接入、补充确认、范围冻结和正式文档产出。
 - `windows-inno-env-installer`：将 Maven 等便携目录打成 Inno Setup EXE，自动配置环境变量，无 Java 时再选装 JDK 8/21。
 
 ## 目录说明
 
-- `designgen/`：需求输入文档生成技能
-- `graduation-project-discovery/`：第 1 阶段需求梳理与冻结技能
 - `windows-inno-env-installer/`：毕设环境一键安装包打包技能（含预检脚本）
 - `.system/`：本地系统自带技能，已通过 Git 忽略
 
@@ -30,21 +24,11 @@
 
 ### 官方 Skills CLI
 
-推荐安装方式：
-
 ```bash
-npx skills add https://github.com/xqnode/skills
-```
-
-安装指定 skill：
-
-```bash
-npx skills add https://github.com/xqnode/skills --skill designgen
-npx skills add https://github.com/xqnode/skills --skill graduation-project-discovery
 npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 ```
 
-安装前先查看可用 skill：
+安装前查看可用 skill：
 
 ```bash
 npx skills add https://github.com/xqnode/skills --list
@@ -52,45 +36,33 @@ npx skills add https://github.com/xqnode/skills --list
 
 ### Codex 手动安装
 
-这是本仓库的原生目录结构；如果你想手动本地安装，可以直接克隆到 `~/.codex/skills`。
-
 ```bash
 git clone https://github.com/xqnode/skills.git ~/.codex/skills
 ```
 
 ### Cline 手动安装
 
-Cline 支持带有 `SKILL.md` 的技能目录结构，建议将每个技能目录复制到 `~/.cline/skills/` 下。
-
 ```bash
 git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
 mkdir -p ~/.cline/skills
-cp -R /tmp/xqnode-skills/designgen ~/.cline/skills/
-cp -R /tmp/xqnode-skills/graduation-project-discovery ~/.cline/skills/
 cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cline/skills/
 ```
 
 ### Claude Code 手动适配
 
-Claude Code 不能直接原生加载 Codex 风格的 skill。最接近的复用方式是 `.claude/commands/` 下的自定义 slash commands，所以建议先克隆仓库，再把对应 `SKILL.md` 适配成命令文件。
-
 ```bash
 git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .claude/commands
-cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .claude/commands/designgen.md
-cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .claude/commands/graduation-project-discovery.md
 cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .claude/commands/windows-inno-env-installer.md
 ```
 
 ### Cursor 手动适配
 
-Cursor 也不能直接原生加载 Codex 风格的 skill。最接近的复用方式是 `.cursor/commands/` 下的项目命令，所以建议先克隆仓库，再把对应 `SKILL.md` 适配成命令文件。
+作为项目命令：
 
 ```bash
 git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .cursor/commands
-cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .cursor/commands/designgen.md
-cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .cursor/commands/graduation-project-discovery.md
 cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .cursor/commands/windows-inno-env-installer.md
 ```
 

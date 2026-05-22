@@ -5,24 +5,18 @@
 - [README.md](./README.md): English overview
 - [README.zh.md](./README.zh.md): 中文说明
 - [LICENSE](./LICENSE): MIT license
-- [designgen/](./designgen): Four-part requirement document generation skill
-- [graduation-project-discovery/](./graduation-project-discovery): Graduation project phase-1 discovery skill
 - [windows-inno-env-installer/](./windows-inno-env-installer): Windows Inno Setup EXE packager with env vars and JDK auto-install
 
 ## Overview
 
-This repository stores reusable Codex skills used across multiple projects.
+This repository stores reusable agent skills for Windows installer packaging.
 
-Current custom skills:
+Current skill:
 
-- `designgen`: Generates client-facing four-part requirement documents for graduation projects and similar delivery scenarios.
-- `graduation-project-discovery`: Handles phase-1 requirement intake, clarification, confirmation, and formal requirement freezing for graduation projects.
 - `windows-inno-env-installer`: Packages portable tools (Maven, etc.) into Inno Setup EXE installers with HKCU env configuration and silent Java/JDK handling.
 
 Structure:
 
-- `designgen/`: Requirement input document generation skill
-- `graduation-project-discovery/`: Phase-1 discovery and requirement-freezing skill
 - `windows-inno-env-installer/`: Inno Setup installer build skill with preflight scripts
 - `.system/`: Local system-provided skills, ignored by Git
 
@@ -30,21 +24,11 @@ Structure:
 
 ### Official Skills CLI
 
-Recommended installation method:
-
 ```bash
-npx skills add https://github.com/xqnode/skills
-```
-
-Install a specific skill:
-
-```bash
-npx skills add https://github.com/xqnode/skills --skill designgen
-npx skills add https://github.com/xqnode/skills --skill graduation-project-discovery
 npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 ```
 
-List available skills before installing:
+List available skills:
 
 ```bash
 npx skills add https://github.com/xqnode/skills --list
@@ -52,45 +36,33 @@ npx skills add https://github.com/xqnode/skills --list
 
 ### Codex Manual Install
 
-Native file structure for Codex. Use this if you want manual local installation.
-
 ```bash
 git clone https://github.com/xqnode/skills.git ~/.codex/skills
 ```
 
 ### Cline Manual Install
 
-Copy each skill into `~/.cline/skills/`.
-
 ```bash
 git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
 mkdir -p ~/.cline/skills
-cp -R /tmp/xqnode-skills/designgen ~/.cline/skills/
-cp -R /tmp/xqnode-skills/graduation-project-discovery ~/.cline/skills/
 cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cline/skills/
 ```
 
 ### Claude Code Manual Adaptation
 
-Claude Code does not use Codex-style skills directly. Its closest reusable format is custom slash commands in `.claude/commands/`, so install by cloning this repo and adapting the markdown files into command files.
-
 ```bash
 git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .claude/commands
-cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .claude/commands/designgen.md
-cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .claude/commands/graduation-project-discovery.md
 cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .claude/commands/windows-inno-env-installer.md
 ```
 
 ### Cursor Manual Adaptation
 
-Cursor does not load Codex-style skills directly. The closest reusable format is project commands in `.cursor/commands/`, so install by cloning this repo and adapting the markdown files into command files.
+As a project command:
 
 ```bash
 git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
 mkdir -p .cursor/commands
-cp ./.agent-skills/xqnode-skills/designgen/SKILL.md .cursor/commands/designgen.md
-cp ./.agent-skills/xqnode-skills/graduation-project-discovery/SKILL.md .cursor/commands/graduation-project-discovery.md
 cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .cursor/commands/windows-inno-env-installer.md
 ```
 
