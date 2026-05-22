@@ -1,88 +1,83 @@
-# Skills Repository
+# xqnode/skills
 
-## File Index
+面向 **Windows 便携工具目录**（Maven、JDK 压缩包等）的 Agent Skill：用 **Inno Setup** 打成 **EXE 安装包**，自动配置用户级环境变量，静默检测 Java，缺 Java 时可选装 JDK 8/21。
 
-- [README.md](./README.md): English overview
-- [README.zh.md](./README.zh.md): 中文说明
-- [LICENSE](./LICENSE): MIT license
-- [windows-inno-env-installer/](./windows-inno-env-installer): Windows Inno Setup EXE packager with env vars and JDK auto-install
+[English](./README.en.md)
 
-## Overview
+## 技能：`windows-inno-env-installer`
 
-This repository stores reusable agent skills for Windows installer packaging.
+| 项 | 说明 |
+|----|------|
+| **目标** | 一次构建成功：预检 → 编译 → 产出 `dist/*-Setup.exe` |
+| **安装器** | Inno Setup 6，普通用户权限（`PrivilegesRequired=lowest`） |
+| **环境变量** | `MAVEN_HOME` / `JAVA_HOME` + 用户 `Path`，写 **HKCU**，无需管理员 |
+| **Java** | 已有 `java -version` 则跳过 JDK 页；否则可选 JDK 21（默认）/ 8 / 不安装 |
+| **附带脚本** | `preflight.ps1`（编译前检查）、`install-jdk.ps1`（Adoptium 下载模板） |
 
-Current skill:
+适合让 Agent 处理：打包 exe、Inno 安装包、环境变量安装器、毕设环境一键安装、避免安装器编译/运行期踩坑。
 
-- `windows-inno-env-installer`: Packages portable tools (Maven, etc.) into Inno Setup EXE installers with HKCU env configuration and silent Java/JDK handling.
+### 仓库结构
 
-Structure:
+```
+windows-inno-env-installer/
+├── SKILL.md                 # 工作流 + ISS 易错点清单
+└── scripts/
+    ├── preflight.ps1        # 检查 Inno、jar、语言包等
+    └── install-jdk.ps1      # JDK 下载与环境变量模板
+```
 
-- `windows-inno-env-installer/`: Inno Setup installer build skill with preflight scripts
-- `.system/`: Local system-provided skills, ignored by Git
+本仓库提供 **技能说明与脚本**；具体项目的 `installer/*.iss`、`build-installer.bat` 需在各自工程里编写（可参考 SKILL.md 中的规则表）。
 
-## Installation
+## 快速开始
 
-### Official Skills CLI
+### 安装技能
 
 ```bash
 npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 ```
 
-List available skills:
+**Cursor**（推荐）：
 
 ```bash
-npx skills add https://github.com/xqnode/skills --list
+git clone https://github.com/xqnode/skills.git %TEMP%\xqnode-skills
+xcopy /E /I %TEMP%\xqnode-skills\windows-inno-env-installer %USERPROFILE%\.cursor\skills\windows-inno-env-installer
 ```
 
-### Codex Manual Install
+**Codex**：
 
 ```bash
 git clone https://github.com/xqnode/skills.git ~/.codex/skills
 ```
 
-### Cline Manual Install
+### 在项目中使用
 
-```bash
-git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
-mkdir -p ~/.cline/skills
-cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cline/skills/
+1. 将 `scripts/` 复制到项目的 `installer/scripts/`。
+2. 按 `SKILL.md` 编写 `installer/app-installer.iss`（向导顺序、HKCU 环境变量、勿在 `PrepareToInstall` 检查 jar 等）。
+3. 预检后编译：
+
+```bat
+powershell -File installer\scripts\preflight.ps1 -ProjectRoot .
+build-installer.bat
 ```
 
-### Claude Code Manual Adaptation
+## 环境要求
 
-```bash
-git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
-mkdir -p .claude/commands
-cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .claude/commands/windows-inno-env-installer.md
-```
+- 已安装 [Inno Setup 6](https://jrsoftware.org/isinfo.php)（`ISCC.exe` 可用）
+- 源目录完整（如 Maven 的 `lib\` 含 `maven-*.jar`，不能只有 `.license`）
+- 需要中文界面时，准备 `ChineseSimplified.isl`
 
-### Cursor Manual Adaptation
+## 其他客户端
 
-As a project command:
+| 客户端 | 安装方式 |
+|--------|----------|
+| **Skills CLI** | `npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer` |
+| **Cline** | 复制 `windows-inno-env-installer/` 到 `~/.cline/skills/` |
+| **Claude Code** | 复制 `SKILL.md` → `.claude/commands/windows-inno-env-installer.md` |
+| **Cursor 命令** | 复制 `SKILL.md` → `.cursor/commands/windows-inno-env-installer.md` |
 
-```bash
-git clone https://github.com/xqnode/skills.git ./.agent-skills/xqnode-skills
-mkdir -p .cursor/commands
-cp ./.agent-skills/xqnode-skills/windows-inno-env-installer/SKILL.md .cursor/commands/windows-inno-env-installer.md
-```
+查看可用技能：`npx skills add https://github.com/xqnode/skills --list`
 
-Or install as a Cursor Agent Skill:
+## 说明
 
-```bash
-git clone https://github.com/xqnode/skills.git /tmp/xqnode-skills
-cp -R /tmp/xqnode-skills/windows-inno-env-installer ~/.cursor/skills/
-```
-
-### Notes on Compatibility
-
-- `Official Skills CLI`: recommended
-- `Codex`: native support
-- `Cline`: compatible with the skill directory pattern
-- `Claude Code`: manual adaptation recommended
-- `Cursor`: manual adaptation recommended
-
-Notes:
-
-- This repository is intended to manage custom reusable skills only.
-- System skills under `.system/` are kept locally and are not part of version control.
-- The repository uses the MIT License.
+- 仓库仅维护可复用的自定义 Skill，不含 `.system/` 系统技能。
+- 许可证：[MIT](./LICENSE)
