@@ -1,0 +1,3 @@
+interface:
+  display_name: "B站课程封面"
+  short_description: "制作白底大字或纸面原型课程封面，兼容16:9与中央4:3裁切，支持按原范围改色"

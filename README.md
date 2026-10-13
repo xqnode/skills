@@ -10,6 +10,7 @@
 |------|------|----------|
 | [`windows-inno-env-installer`](./windows-inno-env-installer/) | 便携工具目录 → Inno Setup EXE，HKCU 环境变量，可选 JDK 8/21 | 打包 exe、Inno Setup、环境变量安装器、毕设环境一键安装 |
 | [`springboot-vue-thesis-builder`](./springboot-vue-thesis-builder/) | 一句话生成 Spring Boot 3.2 + Vue 3 + MySQL 毕设全栈项目 | 毕设、Spring Boot Vue、全栈生成、毕业设计、capstone |
+| [`bili-cover`](./bili-cover/) | 程序员青戈的B站技术教程封面，白底大字或纸面原型，含中央4:3裁切验收 | B站封面、课程封面、纸面原型、封面改色 |
 
 查看全部技能：
 
@@ -22,6 +23,11 @@ npx skills add https://github.com/xqnode/skills --list
 ```
 skills/                          # 本仓库根目录
 ├── README.md
+├── bili-cover/
+│   ├── SKILL.md
+│   ├── references/
+│   ├── assets/
+│   └── scripts/
 ├── windows-inno-env-installer/
 │   ├── SKILL.md
 │   └── scripts/

@@ -10,6 +10,7 @@ A collection of reusable **Agent Skills**. Each skill is a top-level directory w
 |-------|-------------|------------------|
 | [`windows-inno-env-installer`](./windows-inno-env-installer/) | Portable tool folders → Inno Setup EXE, HKCU env vars, optional JDK 8/21 | package exe, Inno Setup, env var installer, one-click grad project environment |
 | [`springboot-vue-thesis-builder`](./springboot-vue-thesis-builder/) | One-sentence prompts → full Spring Boot 3.2 + Vue 3 + MySQL capstone stack | thesis, capstone, Spring Boot Vue, full-stack generator, 毕设 |
+| [`bili-cover`](./bili-cover/) | Chinese Bilibili tutorial covers with bold typography or paper-prototype styling and centered 4:3 crop checks | Bilibili cover, course cover, paper prototype, recolor cover |
 
 List all skills:
 
@@ -22,6 +23,11 @@ npx skills add https://github.com/xqnode/skills --list
 ```
 skills/                          # repo root
 ├── README.md
+├── bili-cover/
+│   ├── SKILL.md
+│   ├── references/
+│   ├── assets/
+│   └── scripts/
 ├── windows-inno-env-installer/
 │   ├── SKILL.md
 │   └── scripts/
