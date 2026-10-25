@@ -14,7 +14,7 @@ Include the exact user-approved text and specify each accent word and region.
 
 ## 本次部署教程的示例文字
 
-署名：程序员青戈
+署名：不添加
 第一行：FastAPI + Vue（黑色）
 第二行：服务器部署教程（只有部署为青蓝 #00A6C7，其余黑色）
 标签：零基础小白版（青蓝底，白字）
@@ -41,8 +41,8 @@ If the previous candidate changed the wrong elements, edit the last correct orig
 不同风格均使用下列文字结构；本期用户明确指定的分行或局部修改范围优先。
 
 ```text
-Place exact author "程序员青戈" at the TOP of the central safe content area, smaller than the headline.
-In the MIDDLE, use TWO large headline lines:
+Do not include an author name or signature. Begin with the course headline.
+Use TWO large headline lines as the main content:
 Line 1: "[主技术栈，通常1–3个]"
 Line 2: "[系统中文名称；非系统教程用确认的中文教程名]"
 BELOW both headlines, render all exact technical tags "[用户给出的完整标签列表]"
