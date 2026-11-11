@@ -11,6 +11,7 @@ A collection of reusable **Agent Skills**. Each skill is a top-level directory w
 | [`windows-inno-env-installer`](./windows-inno-env-installer/) | Portable tool folders → Inno Setup EXE, HKCU env vars, optional JDK 8/21 | package exe, Inno Setup, env var installer, one-click grad project environment |
 | [`springboot-vue-thesis-builder`](./springboot-vue-thesis-builder/) | One-sentence prompts → full Spring Boot 3.2 + Vue 3 + MySQL capstone stack | thesis, capstone, Spring Boot Vue, full-stack generator, 毕设 |
 | [`bili-cover`](./bili-cover/) | Chinese Bilibili tutorial covers with bold typography or paper-prototype styling and centered 4:3 crop checks | Bilibili cover, course cover, paper prototype, recolor cover |
+| [`video-explain`](./video-explain/) | Chinese technical explainer videos: narration scripts, voice auditions, timed animation, captions and MP4 export | technical explainer, narration, storyboard, HTML animation, video export |
 
 List all skills:
 
@@ -23,6 +24,11 @@ npx skills add https://github.com/xqnode/skills --list
 ```
 skills/                          # repo root
 ├── README.md
+├── video-explain/
+│   ├── SKILL.md
+│   ├── references/
+│   ├── assets/
+│   └── scripts/
 ├── bili-cover/
 │   ├── SKILL.md
 │   ├── references/
@@ -50,6 +56,7 @@ npx skills add https://github.com/xqnode/skills
 # Single skill
 npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 npx skills add https://github.com/xqnode/skills --skill springboot-vue-thesis-builder
+npx skills add https://github.com/xqnode/skills --skill video-explain
 
 # All skills
 npx skills add https://github.com/xqnode/skills --all
@@ -142,3 +149,11 @@ Write `description` so agents know **what** the skill does and **when** to use i
 ## License
 
 [MIT](./LICENSE)
+
+### `video-explain`
+
+Create and iterate on Chinese technical explainer videos. The workflow covers scripts, narration direction, auditions, complete-track listening, timed storyboards, HTML animation, captions and MP4 export. It separates script approval, audio acceptance and visual review, and includes independent script-review guidance when requested.
+
+Start with [SKILL.md](./video-explain/SKILL.md). Use Python, Node.js, FFmpeg, a Chromium browser and `playwright-core` as described in [production.md](./video-explain/references/production.md). New narration uses MiniMax; supply your own `MINIMAX_TOKEN_PLAN` environment variable when synthesis is authorized. The bundled offline checks do not call a paid API.
+
+Fonts retain their [SIL Open Font License](./video-explain/assets/handdrawn-project/assets/fonts/lxgw-wenkai/OFL.txt). Demo assets are historical examples, not the default scene for new videos.

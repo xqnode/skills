@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>样片 · 场景名称</title>
+<!-- 用法：把本文件与 explain-kit.js 复制到 视频/主题/样片-场景名/，音频放 assets/audio.wav；字体从 ../assets/fonts 引用。 -->
+<style>
+@font-face{font-family:Wenkai;src:url('../assets/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf')}@font-face{font-family:Wenkai;font-weight:700;src:url('../assets/fonts/lxgw-wenkai/LXGWWenKai-Medium.ttf')}
+*{box-sizing:border-box}body{margin:0;background:#e9e5da;color:#34392f;font:16px/1.6 Wenkai,"Microsoft YaHei",sans-serif}
+header,main{max-width:1560px;margin:auto;padding:18px 30px}h1{font-size:22px;margin:0}header p{font-size:13px;color:#777b6d;margin:3px 0 0}
+button{font:inherit;min-height:44px;padding:8px 14px;border:1.5px solid #777f6e;border-radius:7px;background:#fffdf8;color:#34392f;cursor:pointer}
+.stage{position:relative;aspect-ratio:16/9;background:#fbf8f1;border-radius:6px;overflow:hidden;box-shadow:0 8px 24px #272a2412}.stage svg{display:block;width:100%;height:100%}
+.stage svg text{font-family:Wenkai,"Microsoft YaHei",sans-serif}.caption{font-size:50px;font-weight:700;paint-order:stroke;stroke:#fbf8f1;stroke-width:12px;stroke-linejoin:round}
+.transport{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}.transport input[type=range]{min-width:130px;flex:1;accent-color:#6088a4}.transport output{min-width:110px;font-variant-numeric:tabular-nums}.status{font-size:13px;color:#747b6b;min-height:25px}
+</style>
+<header><h1>样片：场景名称</h1><p>真实配音 · 动作锚定逐字时间</p></header>
+<main><div class="stage"><svg id="svg" viewBox="0 0 1920 1080" role="img" aria-label="场景描述"></svg></div>
+<div class="transport"><button id="play">播放</button><button id="restart">重播</button><input id="seek" type="range" min="0" step=".01" value="0" aria-label="进度"><output id="time"></output><label><input type="checkbox" id="subOn" checked> 字幕</label></div>
+<p id="status" class="status" role="status">正在加载音频与字体</p></main>
+<script type="module">
+import {C,P,sm,eBack,pulse,span,text,sheet,tape,tapeLayout,dropDy,viewport,veil,buddy,chrome,mountPlayer} from './explain-kit.js';
+
+// 时间：OFF 为本段在整片音轨中的起点；CUES 与 K 用整片绝对时间（来自真实逐字时间，不估算）
+const OFF=0,DUR=10;
+const CUES=[/* [开始, 结束, '字幕文本（尾部不带标点）'] */];
+const K={/* 关键词: 开始时间 */};
+const TITLES=[/* [开始时间, '标题', 淡入秒数?] */];
+
+// 页眉与整片同源：读取上级视频目录的 project.json（author / topic），不在样片里写死
+const project=await fetch('../project.json').then(r=>{if(!r.ok)throw Error('无法加载 ../project.json：'+r.status);return r.json()})
+ .catch(e=>{document.getElementById('status').textContent=e.message;throw e});
+const HEADER=[project.author,project.topic].filter(Boolean).join(' / ');
+
+// 舞台：先定隐喻（见 references/animation.md 第 0 节），再定对象和布局
+function render(T,{subOn}){
+ const t=T+OFF;let w='';
+ // w+=tape(...); w+=sheet(...); w+=viewport(...); w+=buddy(t,lookX,{...});
+ return w+chrome(t,{header:HEADER,titles:TITLES,cues:CUES,subOn});
+}
+mountPlayer({svg:document.getElementById('svg'),audio:'assets/audio.wav',duration:DUR,render});
+</script></html>

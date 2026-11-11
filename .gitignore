@@ -1,1 +1,6 @@
 .system/
+
+# Local video-explain runtime artifacts
+video-explain/**/__pycache__/
+video-explain/**/*.py[cod]
+video-explain/.video-explain-sync.json

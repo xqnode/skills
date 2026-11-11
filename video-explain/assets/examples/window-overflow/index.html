@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>样片 · 窗口装满，较早的约束被截掉</title>
+<style>
+@font-face{font-family:Wenkai;src:url('../assets/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf')}@font-face{font-family:Wenkai;font-weight:700;src:url('../assets/fonts/lxgw-wenkai/LXGWWenKai-Medium.ttf')}
+*{box-sizing:border-box}body{margin:0;background:#e9e5da;color:#34392f;font:16px/1.6 Wenkai,"Microsoft YaHei",sans-serif}
+header,main{max-width:1560px;margin:auto;padding:18px 30px}h1{font-size:22px;margin:0}header p{font-size:13px;color:#777b6d;margin:3px 0 0}
+button{font:inherit;min-height:44px;padding:8px 14px;border:1.5px solid #777f6e;border-radius:7px;background:#fffdf8;color:#34392f;cursor:pointer}
+.stage{position:relative;aspect-ratio:16/9;background:#fbf8f1;border-radius:6px;overflow:hidden;box-shadow:0 8px 24px #272a2412}.stage svg{display:block;width:100%;height:100%}
+.stage svg text{font-family:Wenkai,"Microsoft YaHei",sans-serif}.caption{font-size:50px;font-weight:700;paint-order:stroke;stroke:#fbf8f1;stroke-width:12px;stroke-linejoin:round}
+.transport{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}.transport input[type=range]{min-width:130px;flex:1;accent-color:#6088a4}.transport output{min-width:110px;font-variant-numeric:tabular-nums}.status{font-size:13px;color:#747b6b;min-height:25px}
+</style>
+<header><h1>样片：窗口装满，较早的约束被截掉</h1><p>整片 1:42～2:28 的真实配音 · 动作锚定逐字时间 · 组件来自 explain-kit</p></header>
+<main><div class="stage" id="stage"><svg id="svg" viewBox="0 0 1920 1080" role="img" aria-label="上下文窗口被填满后，最早的约束被截断移出的过程"></svg></div>
+<div class="transport"><button id="play">播放</button><button id="restart">重播</button><input id="seek" type="range" min="0" max="45.8" step=".01" value="0" aria-label="进度"><output id="time">0.0 / 45.8</output><label><input type="checkbox" id="subOn" checked> 字幕</label></div>
+<p id="status" class="status" role="status">正在加载音频与字体</p></main>
+<script type="module">
+import {C,clamp,P,sm,eOut,eIO,eBack,pulse,span,lerp,sd,path,text,ellipse,rect,plateText,sheet,tape,tapeLayout,dropDy,pushWithAnticipation,veil,viewport,edgeFlash,pinNote,overflowBox,capacityBar,measure,bracket,scanBand,stamp,tag,circleOut,toolChip,hop,buddy,chrome,mountPlayer} from '../../explain-kit/explain-kit.js';
+
+// ---------- 时间：整片绝对时间，页面时间 = 绝对时间 - OFF ----------
+const OFF=102.30,DUR=45.8;
+const CUES=[[102.628,105.274,'你让 AI 分析一个项目，它要读源码'],[105.444,107.919,'程序运行出错，它要看日志'],[108.218,111.716,'如果还会调用工具，搜索文件、执行命令'],[111.759,114.575,'返回的结果也可能进入上下文'],[115.167,119.903,'再加上前面的聊天记录和工作说明，还要给接下来的回答留出空间'],[119.946,123.999,'对话没有聊多少轮，上下文就可能已经很长了'],[124.798,127.785,'为了继续处理任务，应用需要管理这些内容'],[127.87,131.155,'常见的做法，是只保留部分历史消息'],[131.198,133.971,'或者把旧对话整理成一段摘要'],[134.916,139.182,'如果较早的消息被截掉了，而「不要引入新依赖」恰好在其中'],[139.225,142.766,'这条要求就没有进入模型本次收到的内容'],[142.852,147.417,'聊天界面里仍然能找到原话，但模型这次已经看不到了']];
+// 关键词锚点（来自 full-timeline.json 的逐字时间）
+const K={src:104.93,err:106.47,log:107.58,tools:109.07,search:109.71,exec:110.86,result:111.76,enter:113.81,chat:116.06,sys:116.96,reserve:119.18,few:120.84,long:123.49,manage:126.97,common:127.87,keep:129.75,orAlt:131.2,old:132.09,summary:133.63,early:135.3,cut:136.2,rule:137.26,notIn:140.68,thisTime:141.57,ui:142.85,orig:144.98,cant:146.86};
+
+// ---------- 舞台：聊天纸卷 + 取景框（上下文窗口）+ 小模型 ----------
+const F={x:360,y:395,w:1200,h:330},IN_L=380,CAP=1160,IN_R=IN_L+CAP;
+const ST=460,SH=230,SY=ST+15,SHH=200,SHIFT=350,SLIDE=K.cut+.25;
+const ITEMS=[
+ {id:'rule',w:190,st:'rule',in:103.35,top:'第 1 轮',body:['不要引入','新依赖']},
+ {id:'c2',w:120,st:'chat',in:103.55,top:'第 2 轮',body:['确定','需求']},
+ {id:'c3',w:120,st:'chat',in:103.75,top:'第 3 轮',body:['讨论','方案']},
+ {id:'src',w:240,st:'code',in:K.src,top:'源码'},
+ {id:'log',w:170,st:'log',in:K.log,top:'报错日志'},
+ {id:'r1',w:100,st:'tool',in:K.enter,top:'搜索',body:['结果'],chip:{t:K.search,x:1180,pre:'搜索文件'}},
+ {id:'r2',w:100,st:'tool',in:K.enter+.18,top:'命令',body:['输出'],chip:{t:K.exec,x:1410,pre:'执行命令'}},
+ {id:'res',w:160,st:'res',in:K.reserve,top:'留给回答',body:['的空间']}];
+// 截掉：纸卷先往右收一下，再整体左推
+const layout=tapeLayout({x0:IN_L,items:ITEMS,shift:t=>pushWithAnticipation(t,K.cut,SHIFT)});
+const TITLES=[[102.45,'上下文是怎么被填满的',.6],[124.5,'窗口满了，应用只能腾地方'],[134.8,'较早的要求可能被截掉']];
+const usedAt=L=>(L.end-Math.max(L.start,IN_L-12))/CAP;
+
+function render(T,{subOn}){
+ const t=T+OFF,L=layout(t);let w='';
+ const intro=sm(P(t,102.4,.8)),dF=sm(P(t,102.7,1.1));
+ const used=usedAt(L),hot=used>1.001;
+ w+=tape(ST,SH,intro);
+ // 纸片
+ const lw=pulse(t,K.few,1.8);
+ for(const b of ITEMS){
+  const x=L.pos[b.id];
+  if(b.chip){ // 工具卡：执行 → 返回 → 靠近窗口 → 跳上纸卷末端
+   if(t<b.chip.t)continue;
+   const pop=eBack(P(t,b.chip.t,.4)),mv=eIO(P(t,b.in,.7)),nudge=-50*sm(P(t,K.result,2.0))*(1-mv);
+   const from={x:b.chip.x+nudge,y:830,w:210,h:60},r=hop(from,{x,y:SY,w:b.w,h:SHH},mv);
+   if(mv<=0){const res=t>=K.result;w+=toolChip(b.id,from.x,from.y,from.w,from.h,res?b.top+b.body[0]:b.chip.pre,{pop,result:res,run:res?-1:P(t,b.chip.t+.2,K.result-b.chip.t-.2)})}
+   else w+=sheet(b,r.x,r.y,r.w,r.h,{a:1,top:mv>.5?b.top:'',body:mv>.5?b.body:[]});
+   continue;
+  }
+  if(t<b.in)continue;
+  let wash=0,washC=C.orange,outline=0;
+  if(b.id==='src')wash=pulse(t,K.err,1.3);                                                   // 程序运行出错
+  if(b.st==='chat'||b.id==='rule'){const c=pulse(t,K.chat-.1,2.2);if(c>0){wash=c;washC=C.blue}if(lw>0){wash=lw;washC=C.blue}} // 聊天记录 / 只有 3 轮
+  if(['rule','c2','c3'].includes(b.id)){const o=pulse(t,K.old,1.8);if(o>0){wash=o;washC=C.ink}} // 旧对话
+  if(b.id==='res'){const o=pulse(t,124.8,1.6);if(o>0){wash=o;washC=C.orange}}                 // 放不下的部分
+  if(['rule','c2'].includes(b.id)&&t>=K.early)outline=sm(P(t,K.early+(b.id==='c2'?.12:0),.4))*(1-sm(P(t,K.rule+3,.6))); // 较早的消息
+  const code=b.id==='src'?P(t,K.src,1.4):1,top=b.id==='src'?`源码 · ${Math.max(1,Math.ceil(P(t,K.src,1.4)*6))} 个文件`:b.top;
+  const hh=b.id==='log'?lerp(110,SHH,sm(P(t,K.log+.3,2.4))):SHH;
+  w+=sheet(b,x,SY+dropDy(t,b.in),b.w,hh,{a:eOut(P(t,b.in,.3)),wash,washC,code,top,outline});
+ }
+ w+=scanBand(P(t,K.common,1.8),-120,L.end+40,ST+4,SH-8);                                     // 应用逐段检查
+ w+=veil(F,dF);                                                                               // 框外：模型看不到
+ if(hot)w+=overflowBox(IN_R+20,SY-10,L.end-IN_R-14,SHH+20,sm(P(t,K.reserve+.2,.4))*(1-sm(P(t,SLIDE+.6,.5))));
+ w+=viewport(F,dF)+text(F.x,F.y-18,'上下文窗口：模型这一次能看到的内容',{size:26,fill:C.sub,a:sm(P(t,102.9,.5))});
+ w+=pinNote(IN_L,407,270,'工作说明（通常保留）',{a:sm(P(t,103.2,.4)),wash:pulse(t,K.sys-.1,2.2)});
+ const recv=sm(P(t,K.notIn,.6));                                                              // 本次收到的内容
+ if(recv>0)w+=rect(F.x+8,F.y+8,F.w-16,F.h-16,C.blue,.06*recv+.06*pulse(t,K.cant-.2,1.4),10)+text(F.x+F.w-20,437,'= 模型本次收到的内容',{size:26,fill:C.blueD,anchor:'end',weight:700,a:recv});
+ w+=circleOut(t,K.chat,L.pos.rule+215,SY+100,250,128,{until:118.7,seed:4});
+ w+=circleOut(t,K.sys,IN_L+135,428,160,34,{until:118.9,seed:6,dur:.5});
+ w+=plateText(L.pos.rule+215,ST+SH+55,'对话只有 3 轮',{size:26,fill:C.blueD,a:span(t,K.few,K.manage-.4),anchor:'middle'});
+ w+=measure(L.start,L.end,ST+SH+18,sm(P(t,121.6,1.8)),1-sm(P(t,K.manage,.5)),'内容总长');   // 很长了
+ w+=capacityBar(IN_L,762,CAP,used,sm(P(t,103.5,.5)));
+ w+=text(1180,822,'工具调用',{size:24,fill:C.sub,a:sm(P(t,K.tools,.4))*(1-sm(P(t,K.enter+.4,.5)))});
+ w+=stamp(Math.min(L.end-60,1820),ST-34,'放不下了',eBack(P(t,K.long,.4)),1-sm(P(t,SLIDE+.6,.5)),{w:168});
+ const tf=1-sm(P(t,K.notIn-.4,.5));                                                           // 应用的做法
+ for(const[a,x,wd,s,col]of[[K.manage,380,260,'应用：腾出空间',C.ink],[K.keep,660,270,'① 只保留最近的',C.orange],[K.orAlt,950,330,t<K.summary?'② 或者……':'② 整理成摘要（后面讲）',C.muted]])
+  w+=tag(x,900,wd,s,eBack(P(t,a,.45)),{color:col,a:tf});
+ w+=bracket(L.pos.c3,L.end,ST-14,sm(P(t,K.keep,.6))*(1-sm(P(t,SLIDE+.4,.5))),'保留这一段');      // 只保留最近的
+ w+=edgeFlash(F.x,F.y-6,F.y+F.h+6,pulse(t,K.cut,1.2)+pulse(t,K.cant,1.2));                    // 截掉 / 看不到
+ const ruleX=L.pos.rule;
+ w+=plateText(ruleX+95,ST-18,'在窗口外了',{size:30,a:sm(P(t,K.rule+.3,.4))*(1-sm(P(t,K.notIn,.5))),anchor:'middle'});
+ { const u=sm(P(t,K.ui,1.4));if(u>0)w+=path(`M8 ${ST+SH+16}H${lerp(8,1912,u)}`,{stroke:C.blue,w:3.5})+rect(0,ST,1920,SH,C.blue,.1*pulse(t,K.ui,1.6),0)+plateText(20,ST+SH+56,'聊天界面：完整记录都还在',{size:28,fill:C.blueD,a:sm(P(t,K.ui+.5,.4))}); }
+ { const o=sm(P(t,K.orig,.6));if(o>0)w+=path(ellipse(ruleX+95,SY+100,128,128,11),{stroke:C.orange,w:3.5,draw:o}); }
+ const look=t>=K.thisTime?960+480*Math.sin((t-K.thisTime)*1.7):(t>=K.tools-.2&&t<K.enter+.3)?1500:t>=K.src?L.end-100:960;
+ w+=buddy(t,look,{cx:960,base:F.y+2,hops:[K.src,K.log,K.result,K.enter+.5,K.reserve]});
+ return w+chrome(t,{header:'程序员青戈 / 上下文窗口、压缩与指令遗漏',titles:TITLES,cues:CUES,subOn});
+}
+mountPlayer({svg:document.getElementById('svg'),audio:'assets/audio.wav',duration:DUR,render,state:T=>{const t=T+OFF;return{abs:t,used:+usedAt(layout(t)).toFixed(3)}}});
+</script></html>

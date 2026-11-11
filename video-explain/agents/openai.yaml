@@ -1,0 +1,4 @@
+interface:
+  display_name: "技术讲解视频制作"
+  short_description: "从文案、正常语速配音和真实时间戳到手绘动画及成片验收"
+  default_prompt: "使用 $video-explain 制作一条中文技术讲解视频，先确认文案与代表性试听，再制作动画和成片。"

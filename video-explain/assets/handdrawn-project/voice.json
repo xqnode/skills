@@ -1,0 +1,41 @@
+{
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "voice_id": "Chinese_casual_instructor_nv1",
+  "api_key_env": "MINIMAX_TOKEN_PLAN",
+  "speed": 1,
+  "gain_db": 6,
+  "direction_notes": "强制技术讲师讲解风格：面向学习者，自然亲切、有引导感，概念、因果和转折层次清楚；禁止同事闲聊或平顺念稿。此项仅作设计记录，不发送为MiniMax自由文本指导；须结合实际控制项与音频听审落实。",
+  "segments": [
+    {
+      "id": "intro",
+      "text": "我们来看看，一个网页请求是怎样拿到数据的。",
+      "pause_after": 0.55
+    },
+    {
+      "id": "request",
+      "text": "首先，浏览器向后端发送请求。",
+      "pause_after": 0.4
+    },
+    {
+      "id": "check",
+      "text": "后端检查参数，",
+      "pause_after": 0.22
+    },
+    {
+      "id": "query",
+      "text": "从数据库中查询用户资料，",
+      "pause_after": 0.35
+    },
+    {
+      "id": "return",
+      "text": "再把结果返回给浏览器。",
+      "pause_after": 0.55
+    },
+    {
+      "id": "update",
+      "text": "最后，前端读取数据，更新页面。",
+      "pause_after": 0.65
+    }
+  ]
+}

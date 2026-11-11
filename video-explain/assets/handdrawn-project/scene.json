@@ -1,0 +1,196 @@
+{
+  "intro": {
+    "segment": "request"
+  },
+  "phases": [
+    {
+      "segment": "request",
+      "phrase": "发送请求"
+    },
+    {
+      "segment": "check",
+      "phrase": "检查参数"
+    },
+    {
+      "segment": "query",
+      "phrase": "数据库"
+    },
+    {
+      "segment": "query",
+      "phrase": "用户资料",
+      "offset": 0.27
+    },
+    {
+      "segment": "return",
+      "phrase": "返回给浏览器"
+    },
+    {
+      "segment": "update",
+      "phrase": "更新页面"
+    }
+  ],
+  "legs": [
+    {
+      "start": {
+        "segment": "request",
+        "phrase": "发送请求"
+      },
+      "end": {
+        "segment": "request",
+        "phrase": "发送请求",
+        "edge": "end"
+      },
+      "geometry": [
+        500,
+        790,
+        480,
+        "#f08c28",
+        "GET /user/1"
+      ]
+    },
+    {
+      "start": {
+        "segment": "query",
+        "phrase": "数据库"
+      },
+      "end": {
+        "segment": "query",
+        "phrase": "查询",
+        "edge": "end"
+      },
+      "geometry": [
+        1130,
+        1420,
+        480,
+        "#f08c28",
+        "SELECT …"
+      ]
+    },
+    {
+      "start": {
+        "segment": "query",
+        "phrase": "用户资料",
+        "offset": 0.27
+      },
+      "end": {
+        "segment": "return"
+      },
+      "geometry": [
+        1420,
+        1130,
+        610,
+        "#2f7fe0",
+        "1 行数据"
+      ]
+    },
+    {
+      "start": {
+        "segment": "return",
+        "phrase": "返回给浏览器"
+      },
+      "end": {
+        "segment": "return",
+        "phrase": "返回给浏览器",
+        "edge": "end"
+      },
+      "geometry": [
+        790,
+        500,
+        610,
+        "#2f7fe0",
+        "JSON"
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "start": {
+        "segment": "request",
+        "phrase": "发送请求"
+      },
+      "end": {
+        "segment": "request",
+        "phrase": "发送请求",
+        "edge": "end",
+        "offset": 0.35
+      }
+    },
+    {
+      "start": {
+        "segment": "query",
+        "phrase": "数据库"
+      },
+      "end": {
+        "segment": "query",
+        "phrase": "用户资料",
+        "offset": 0.27
+      }
+    },
+    {
+      "start": {
+        "segment": "query",
+        "phrase": "用户资料",
+        "offset": 0.27
+      },
+      "end": {
+        "segment": "return"
+      }
+    },
+    {
+      "start": {
+        "segment": "return",
+        "phrase": "返回给浏览器"
+      },
+      "end": {
+        "segment": "return",
+        "phrase": "返回给浏览器",
+        "edge": "end",
+        "offset": 0.35
+      }
+    },
+    {
+      "start": {
+        "segment": "update",
+        "phrase": "更新页面"
+      },
+      "end": {
+        "audio_end": true
+      }
+    },
+    {
+      "start": {
+        "segment": "check",
+        "phrase": "检查参数"
+      },
+      "end": {
+        "segment": "query",
+        "phrase": "数据库"
+      }
+    }
+  ],
+  "events": {
+    "check": {
+      "segment": "check",
+      "phrase": "检查参数"
+    },
+    "query": {
+      "segment": "query"
+    },
+    "hit": {
+      "segment": "query",
+      "phrase": "用户资料"
+    },
+    "return": {
+      "segment": "return"
+    },
+    "update": {
+      "segment": "update",
+      "phrase": "更新页面"
+    },
+    "complete": {
+      "segment": "update",
+      "phrase": "更新页面",
+      "edge": "end"
+    }
+  }
+}

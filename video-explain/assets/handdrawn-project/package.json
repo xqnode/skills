@@ -1,0 +1,8 @@
+{
+  "name": "technical-video-project",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "playwright-core": "1.56.0"
+  }
+}

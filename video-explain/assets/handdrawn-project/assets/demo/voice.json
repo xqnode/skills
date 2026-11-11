@@ -1,0 +1,39 @@
+{
+  "speaker": "zh_male_taocheng_uranus_bigtts",
+  "resource": "seed-tts-2.0",
+  "speech_rate": 0,
+  "gain_db": 6,
+  "context": "请用自然、清晰的技术讲解语气，以正常语速说话，不要刻意放慢。按完整意群连贯表达，动作和关键概念轻微加重，句尾自然收住，不用播音腔。",
+  "segments": [
+    {
+      "id": "intro",
+      "text": "我们来看看，一个网页请求是怎样拿到数据的。",
+      "pause_after": 0.55
+    },
+    {
+      "id": "request",
+      "text": "首先，浏览器向后端发送请求。",
+      "pause_after": 0.4
+    },
+    {
+      "id": "check",
+      "text": "后端检查参数，",
+      "pause_after": 0.22
+    },
+    {
+      "id": "query",
+      "text": "从数据库中查询用户资料，",
+      "pause_after": 0.35
+    },
+    {
+      "id": "return",
+      "text": "再把结果返回给浏览器。",
+      "pause_after": 0.55
+    },
+    {
+      "id": "update",
+      "text": "最后，前端读取数据，更新页面。",
+      "pause_after": 0.65
+    }
+  ]
+}

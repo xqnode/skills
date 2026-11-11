@@ -1,0 +1,8 @@
+{
+  "schema": "explain-v1",
+  "anchors": {},
+  "chapters": [
+    {"id": "opening", "title": "", "start": {"audio_start": true}, "end": {"audio_end": true}}
+  ],
+  "constraints": []
+}

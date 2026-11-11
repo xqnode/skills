@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>技术讲解视频</title>
+<!-- project.json配置作者/主题；timeline.json由真实时间生成；scenes.js实现当前主题。 -->
+<style>
+@font-face{font-family:Wenkai;src:url('./assets/fonts/lxgw-wenkai/LXGWWenKai-Regular.ttf')}@font-face{font-family:Wenkai;font-weight:700;src:url('./assets/fonts/lxgw-wenkai/LXGWWenKai-Medium.ttf')}
+*{box-sizing:border-box}body{margin:0;background:#e9e5da;color:#34392f;font:16px/1.6 Wenkai,"Microsoft YaHei",sans-serif}
+header,main{max-width:1560px;margin:auto;padding:18px 30px}h1{font-size:22px;margin:0}header p{font-size:13px;color:#777b6d;margin:3px 0 0}
+button{font:inherit;min-height:44px;padding:8px 14px;border:1.5px solid #777f6e;border-radius:7px;background:#fffdf8;color:#34392f;cursor:pointer}
+.stage{position:relative;aspect-ratio:16/9;background:#fbf8f1;border-radius:6px;overflow:hidden;box-shadow:0 8px 24px #272a2412}.stage svg{display:block;width:100%;height:100%}
+.stage svg text{font-family:Wenkai,"Microsoft YaHei",sans-serif}.caption{font-size:50px;font-weight:700;paint-order:stroke;stroke:#fbf8f1;stroke-width:12px;stroke-linejoin:round}
+.transport{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}.transport input[type=range]{min-width:130px;flex:1;accent-color:#6088a4}.transport output{min-width:110px;font-variant-numeric:tabular-nums}.status{font-size:13px;color:#747b6b;min-height:25px}
+</style>
+<header><h1>技术讲解视频</h1><p>真实配音 · 动作锚定逐字时间</p></header>
+<main><div class="stage"><svg id="svg" viewBox="0 0 1920 1080" role="img" aria-label="场景描述"></svg></div>
+<div class="transport"><button id="play">播放</button><button id="restart">重播</button><input id="seek" type="range" min="0" step=".01" value="0" aria-label="进度"><output id="time"></output><label><input type="checkbox" id="subOn" checked> 字幕</label></div>
+<p id="status" class="status" role="status">正在加载音频与字体</p></main>
+<script type="module">
+import {chrome,mountPlayer} from './explain-kit.js';
+import {renderScene,audit} from './scene-entry.js';
+async function load(){
+ const read=async file=>{const r=await fetch(file);if(!r.ok)throw Error(`无法加载${file}：${r.status}`);return r.json()};
+ const [timeline,project]=await Promise.all([read('timeline.json'),read('project.json')]);
+ if(timeline.schema!=='explain-v1')throw Error('时间线协议不匹配');
+ if(project.stage!=='ready')throw Error('画面仍为draft；完成已审分镜实现后再设为ready');
+ const context=t=>({timeline,project,chapter:timeline.chapters.find(c=>t>=c.start&&t<c.end)||timeline.chapters.at(-1)});
+ const titles=timeline.chapters.filter(c=>c.title).map(c=>[c.start,c.title]);
+ window.videoTimeline=timeline;window.videoProject=project;
+ window.videoAudit=t=>audit(t,context(t));
+ mountPlayer({svg:document.getElementById('svg'),audio:timeline.audio,duration:timeline.duration,
+  render:(t,{subOn})=>renderScene(t,context(t))+chrome(t,{header:[project.author,project.topic].filter(Boolean).join(' / '),titles,cues:timeline.cues,subOn})});
+ return await window.videoReady;
+}
+window.videoReady=load();window.videoReady.catch(e=>document.getElementById('status').textContent=e.message);
+</script></html>

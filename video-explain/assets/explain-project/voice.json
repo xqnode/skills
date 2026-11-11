@@ -1,0 +1,12 @@
+{
+  "provider": "minimax",
+  "model": "speech-2.8-hd",
+  "voice_id": "Chinese_casual_instructor_nv1",
+  "api_key_env": "MINIMAX_TOKEN_PLAN",
+  "speed": 1,
+  "gain_db": 6,
+  "draft": true,
+  "segments": [
+    {"id": "intro", "text": "请先确认文稿，再填写配音分段。", "pause_after": 0.25}
+  ]
+}

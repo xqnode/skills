@@ -11,6 +11,7 @@
 | [`windows-inno-env-installer`](./windows-inno-env-installer/) | 便携工具目录 → Inno Setup EXE，HKCU 环境变量，可选 JDK 8/21 | 打包 exe、Inno Setup、环境变量安装器、毕设环境一键安装 |
 | [`springboot-vue-thesis-builder`](./springboot-vue-thesis-builder/) | 一句话生成 Spring Boot 3.2 + Vue 3 + MySQL 毕设全栈项目 | 毕设、Spring Boot Vue、全栈生成、毕业设计、capstone |
 | [`bili-cover`](./bili-cover/) | 程序员青戈的B站技术教程封面，白底大字或纸面原型，含中央4:3裁切验收 | B站封面、课程封面、纸面原型、封面改色 |
+| [`video-explain`](./video-explain/) | 中文技术图解视频：文稿打磨、配音试听、真实时间分镜、字幕与MP4导出 | 技术科普视频、口播稿、配音试听、手绘动画、视频导出 |
 
 查看全部技能：
 
@@ -23,6 +24,11 @@ npx skills add https://github.com/xqnode/skills --list
 ```
 skills/                          # 本仓库根目录
 ├── README.md
+├── video-explain/
+│   ├── SKILL.md
+│   ├── references/
+│   ├── assets/
+│   └── scripts/
 ├── bili-cover/
 │   ├── SKILL.md
 │   ├── references/
@@ -50,6 +56,7 @@ npx skills add https://github.com/xqnode/skills
 # 安装单个技能
 npx skills add https://github.com/xqnode/skills --skill windows-inno-env-installer
 npx skills add https://github.com/xqnode/skills --skill springboot-vue-thesis-builder
+npx skills add https://github.com/xqnode/skills --skill video-explain
 
 # 安装全部
 npx skills add https://github.com/xqnode/skills --all
@@ -144,3 +151,11 @@ cd vue && npm install && npm run build
 
 - 仓库仅维护可复用的自定义 Skill，不含 `.system/` 系统技能。
 - 许可证：[MIT](./LICENSE)
+
+### `video-explain`
+
+制作和迭代中文技术图解视频，覆盖文字稿、读法设计、代表性试听、全文听审、真实时间分镜、HTML动画、字幕与MP4导出。区分文字确认、声音验收与画面审核，并提供按需独立审稿及盲审的方法。
+
+从 [SKILL.md](./video-explain/SKILL.md) 开始。运行所需的 Python、Node.js、FFmpeg、Chromium浏览器及 `playwright-core` 配置见 [production.md](./video-explain/references/production.md)。新配音使用MiniMax，由使用者配置自己的 `MINIMAX_TOKEN_PLAN` 环境变量，并按任务授权合成；配套离线检查不会调用付费接口。
+
+附带字体保留 [SIL Open Font License](./video-explain/assets/handdrawn-project/assets/fonts/lxgw-wenkai/OFL.txt)。历史示例用于复现与对照，不作为新主题的默认场景。
